@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -11,11 +11,10 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="absolute-center">
+          {{title}}
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -33,8 +32,22 @@
           Essential Links
         </q-item-label>
         <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
+          v-for="(link, index) in essentialLinks"
+          :key="link.title + '_' + index"
+          v-bind="link"
+        />
+      </q-list>
+      <q-separator class="q-mt-xl"/>
+      <q-list>
+        <q-item-label
+          header
+          class="text-grey-8"
+        >
+          Project Links
+        </q-item-label>
+        <ProjectLink
+          v-for="(link, index) in projectLinks"
+          :key="link.title + '_' + index"
           v-bind="link"
         />
       </q-list>
@@ -48,60 +61,77 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import ProjectLink from 'components/ProjectLink.vue'
 
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
+const essentialLinksData = [
   {
     title: 'Github',
-    caption: 'github.com/quasarframework',
+    caption: 'github.com',
     icon: 'code',
-    link: 'https://github.com/quasarframework'
+    link: 'https://github.com'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
+    title: 'Google',
+    caption: 'google.com',
     icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    link: 'https://google.com'
   },
   {
     title: 'Facebook',
-    caption: '@QuasarFramework',
+    caption: 'facebook.com',
     icon: 'public',
-    link: 'https://facebook.quasar.dev'
+    link: 'https://facebook.com'
+  }
+]
+
+const projectLinksData = [
+  {
+    title: 'UserPage',
+    caption: 'user page',
+    icon: 'person',
+    link: '/'
   },
   {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'AuthPage',
+    caption: 'auth page',
+    icon: 'login',
+    link: '/auth'
+  },
+  {
+    title: 'ChatPage',
+    caption: 'chat page',
+    icon: 'chat',
+    link: '/chat'
   }
 ]
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
+  components: { EssentialLink, ProjectLink },
   data () {
     return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
+      leftDrawerOpen: true,
+      essentialLinks: essentialLinksData,
+      projectLinks: projectLinksData
     }
+  },
+  computed: {
+    title () {
+      const currentPath = this.$route.fullPath
+      let result
+      switch (currentPath) {
+        case '/': result = 'User Page'
+          break
+        case '/chat': result = 'Chat Page'
+          break
+        case '/auth': result = 'Auth Page'
+          break
+      }
+      return result
+    }
+  },
+  mounted () {
+    this.leftDrawerOpen = false
   }
 }
 </script>
