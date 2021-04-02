@@ -10,11 +10,26 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-
+        <q-btn
+            dense
+            flat
+            icon="arrow_back"
+            label="Back"
+            v-go-back.single
+            v-if="$route.fullPath.includes('/chat')"
+        />
         <q-toolbar-title class="absolute-center">
           {{title}}
         </q-toolbar-title>
-
+        <q-btn
+            to="/auth"
+            class="absolute-right q-mr-sm"
+            dense
+            flat
+            no-caps
+            icon="account_circle"
+            label="Login"
+        />
       </q-toolbar>
     </q-header>
 
