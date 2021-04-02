@@ -53,7 +53,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="container" >
       <router-view />
     </q-page-container>
   </q-layout>
@@ -135,3 +135,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .container {
+    max-width: 900px;
+  }
+</style>
