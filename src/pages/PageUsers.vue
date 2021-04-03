@@ -20,10 +20,12 @@
         </q-item-section>
       </q-item>
     </q-list>
+    {{test}}
   </q-page>
 </template>
 
 <script>
+// import { mapState } from 'vuex'
 
 export default {
   name: 'PageUsers',
@@ -56,6 +58,9 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    // ...mapState(['test'])
   }
 }
 </script>

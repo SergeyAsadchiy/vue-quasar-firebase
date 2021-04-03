@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { firebaseAuth, firebaseDB } from 'boot/firebase'
 
 // import example from './module-example'
 
@@ -16,10 +17,18 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
-    modules: {
-      // example
+    state: {
+      test: '123132'
     },
+    getters: {
 
+    },
+    actions: {
+
+    },
+    mutations: {
+
+    },
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEBUGGING
