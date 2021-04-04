@@ -55,13 +55,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['bindChat', 'unbindChat', 'addMessage']),
+    ...mapActions(['bindChat', 'unbindChat', 'sendMessageDB']),
 
     sendMessage () {
-      /* this.messages.push({
-        text: this.newMessage,
-        from: 'me'
-      }) */
+      this.sendMessageDB({
+        message: {
+          text: this.newMessage,
+          from: 'me'
+        },
+        otherUserID: this.otherUserID
+      })
+      this.newMessage = ''
     }
   },
   mounted () {

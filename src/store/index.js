@@ -92,6 +92,13 @@ export default function (/* { ssrContext } */) {
         if (!payload.userID) return
         firebaseDB.collection('users').doc(payload.userID).update(payload.updates)
       },
+      sendMessageDB ({ state }, payload) {
+        // to logged user
+        firebaseDB.collection('chats').doc(state.userDetails.userID).collection(payload.otherUserID).add(payload.message)
+        // to other user
+        payload.message.from = 'them'
+        firebaseDB.collection('chats').doc(payload.otherUserID).collection(state.userDetails.userID).add(payload.message)
+      },
 
       // subscribes
       bindUsers: firestoreAction(({ state, bindFirestoreRef }) => {
