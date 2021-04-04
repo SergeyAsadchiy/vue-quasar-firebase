@@ -91,6 +91,7 @@
 import EssentialLink from 'components/EssentialLink.vue'
 import ProjectLink from 'components/ProjectLink.vue'
 import { mapActions, mapState } from 'vuex'
+import mixinOtherUserDetails from 'src/mixins/mixinOtherUserDetails.js'
 
 const essentialLinksData = [
   {
@@ -136,6 +137,7 @@ const projectLinksData = [
 
 export default {
   name: 'MainLayout',
+  mixins: [mixinOtherUserDetails],
   components: { EssentialLink, ProjectLink },
   data () {
     return {
@@ -153,14 +155,9 @@ export default {
     title () {
       const currentPath = this.$route.fullPath
       let result
-      switch (currentPath) {
-        case '/': result = 'User Page'
-          break
-        case '/chat': result = 'Chat Page'
-          break
-        case '/auth': result = 'Auth Page'
-          break
-      }
+      if (currentPath === '/') result = 'Users Page'
+      else if (currentPath.includes('/chat')) result = this.otherUserDetails.name + ' Chat'
+      else if (currentPath.includes('/auth')) result = 'Auth Page'
       return result
     }
   },
@@ -178,7 +175,7 @@ export default {
   }
   .container {
     width: 40%;
-    min-width: 400px;
+    min-width: 500px;
     height: 90vh;
     margin: auto;
   }

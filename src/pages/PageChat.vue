@@ -1,12 +1,12 @@
 <template>
   <q-page class="flex column container">
-    <q-banner class="text-center text-grey-8 bg-grey-4">
-      User is off-line
+    <q-banner v-if="!otherUserDetails.online" class="text-center text-grey-8 bg-grey-4">
+      User {{otherUserDetails.name}} is off-line
     </q-banner>
     <div class="q-pa-md column col justify-end">
       <q-chat-message
           v-for="(message, index) in messages"
-          :name="message.from"
+          :name="message.from === 'me' ? 'me: ' + userDetails.name : otherUserDetails.name"
           :text="[message.text]"
           :key="message.text + '_' + index"
           :sent="message.from === 'me'"
@@ -15,7 +15,7 @@
     </div>
     <q-footer elevated>
       <q-toolbar>
-        <q-form @submit="sendMessage" class="chat-footer">
+        <div class="chat-footer">
           <q-input
               bg-color="white"
               dense
@@ -25,43 +25,51 @@
               v-model="newMessage"
           >
             <template v-slot:after>
-              <q-btn dense flat icon="send" round color="white"/>
+              <q-btn @click="sendMessage" dense flat icon="send" type="submit" round color="white"/>
             </template>
           </q-input>
-        </q-form>
+        </div>
       </q-toolbar>
     </q-footer>  </q-page>
 </template>
 
 <script>
+import { mapGetters, mapState, mapActions } from 'vuex'
+import mixinOtherUserDetails from 'src/mixins/mixinOtherUserDetails.js'
+
 export default {
   name: 'PageChat',
+  mixins: [mixinOtherUserDetails],
   data () {
     return {
       newMessage: '',
-      messages: [
-        {
-          text: 'hey, how are you?',
-          from: 'me'
-        },
-        {
-          text: 'Good thanks, how are you?',
-          from: 'them'
-        },
-        {
-          text: 'Pretty, good!',
-          from: 'me'
-        }
-      ]
+      otherUserID: ''
+    }
+  },
+  computed: {
+    ...mapGetters(['users', 'chat']),
+    ...mapState(['userDetails']),
+
+    messages () {
+      return this.chat
     }
   },
   methods: {
+    ...mapActions(['bindChat', 'unbindChat', 'addMessage']),
+
     sendMessage () {
-      this.messages.push({
+      /* this.messages.push({
         text: this.newMessage,
         from: 'me'
-      })
+      }) */
     }
+  },
+  mounted () {
+    this.otherUserID = this.$route.params?.otherUserID
+    this.bindChat(this.otherUserID)
+  },
+  beforeDestroy () {
+    this.unbindChat()
   }
 }
 </script>
