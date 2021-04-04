@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex q-ma-md">
-    <q-card class="full-width">
+  <q-page class="flex">
+    <q-card class="container">
       <q-tabs
           v-model="tab"
           dense
@@ -43,3 +43,4 @@ export default {
   }
 }
 </script>
+

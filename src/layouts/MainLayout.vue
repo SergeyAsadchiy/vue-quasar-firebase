@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -42,7 +42,7 @@
         >
           Logout <br>
           {{userDetails.name}}
-        </q-btn>>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -81,7 +81,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container class="container" >
+    <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
@@ -90,7 +90,7 @@
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
 import ProjectLink from 'components/ProjectLink.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 const essentialLinksData = [
   {
@@ -171,12 +171,15 @@ export default {
 </script>
 
 <style lang="scss">
-  .container {
-    max-width: 900px;
-  }
   .q-toolbar{
     .q-btn{
       line-height: 1.2;
     }
+  }
+  .container {
+    width: 40%;
+    min-width: 400px;
+    height: 90vh;
+    margin: auto;
   }
 </style>

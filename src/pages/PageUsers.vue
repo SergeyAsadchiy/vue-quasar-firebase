@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex q-pa-md">
+  <q-page class="flex q-pa-md container">
     <q-list class="full-width" separator bordered>
       <q-item :key="user.id" class="q-my-sm" clickable v-for="user in users" v-ripple>
         <q-item-section avatar>

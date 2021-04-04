@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex column">
-    <q-banner class="text-center bg-grey-4">
+  <q-page class="flex column container">
+    <q-banner class="text-center text-grey-8 bg-grey-4">
       User is off-line
     </q-banner>
     <div class="q-pa-md column col justify-end">
@@ -15,7 +15,7 @@
     </div>
     <q-footer elevated>
       <q-toolbar>
-        <q-form @submit="sendMessage" class="full-width">
+        <q-form @submit="sendMessage" class="chat-footer">
           <q-input
               bg-color="white"
               dense
@@ -65,3 +65,10 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .chat-footer {
+    width: 40%;
+    min-width: 400px;
+    margin: auto;
+  }
+</style>
