@@ -40,8 +40,10 @@
             no-caps
             icon="account_circle"
         >
-          Logout <br>
-          {{userDetails.name}}
+          <div class="q-ml-sm">
+            <div>Logout</div>
+            <div>{{userDetails.name}}</div>
+          </div>
         </q-btn>
       </q-toolbar>
     </q-header>
@@ -126,12 +128,6 @@ const projectLinksData = [
     caption: 'auth page',
     icon: 'login',
     link: '/auth'
-  },
-  {
-    title: 'ChatPage',
-    caption: 'chat page',
-    icon: 'chat',
-    link: '/chat'
   }
 ]
 
