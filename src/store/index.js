@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { firebaseAuth, firebaseDB } from 'boot/firebase'
+import { firebaseAuth, firebaseDB, firebase } from 'boot/firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import { Notify } from 'quasar'
 
@@ -93,6 +93,7 @@ export default function (/* { ssrContext } */) {
         firebaseDB.collection('users').doc(payload.userID).update(payload.updates)
       },
       sendMessageDB ({ state }, payload) {
+        payload.message.createdAt = firebase.firestore.Timestamp.now()
         // to logged user
         firebaseDB.collection('chats').doc(state.userDetails.userID).collection(payload.otherUserID).add(payload.message)
         // to other user
@@ -107,6 +108,7 @@ export default function (/* { ssrContext } */) {
       bindChat: firestoreAction(({ state, bindFirestoreRef }, otherUserID) => {
         console.log('bindChat: ', otherUserID)
         const chats = firebaseDB.collection('chats').doc(state.userDetails.userID).collection(otherUserID)
+          .orderBy('createdAt')
         bindFirestoreRef('chat', chats)
       }),
       unbindUsers: firestoreAction(({ unbindFirestoreRef }) => {
