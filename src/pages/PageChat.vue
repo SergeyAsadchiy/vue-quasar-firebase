@@ -20,6 +20,7 @@
       <q-toolbar>
         <div class="chat-footer">
           <q-input
+              ref="newMessageInput"
               bg-color="white"
               dense
               label="Message"
@@ -73,10 +74,14 @@ export default {
         },
         otherUserID: this.otherUserID
       })
-      this.newMessage = ''
+      this.clearMessage()
     },
     scrollChatToBottom () {
       this.$refs.chatMessages.setScrollPosition(999999999, 500)
+    },
+    clearMessage () {
+      this.newMessage = ''
+      this.$refs.newMessageInput.focus()
     }
   },
   watch: {
