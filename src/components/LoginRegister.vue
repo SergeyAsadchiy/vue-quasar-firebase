@@ -2,7 +2,7 @@
   <q-form @submit="submitForm">
     <q-input v-if="tab === 'register'" class="q-mb-md" v-model="formData.name" outlined label="Name"/>
     <q-input class="q-mb-md" v-model="formData.email" outlined label="E-mail"/>
-    <q-input class="q-mb-md" v-model="formData.password" outlined label="Password"/>
+    <q-input class="q-mb-md" v-model="formData.password" outlined label="Password" type="password"/>
     <div class="row">
       <q-space/>
       <q-btn color="primary" type="submit" :label="tab"/>
@@ -22,8 +22,8 @@ export default {
     return {
       formData: {
         name: '',
-        email: '',
-        password: ''
+        email: 'sergey@test.com',
+        password: '11111111'
       }
     }
   },

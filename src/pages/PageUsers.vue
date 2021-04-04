@@ -20,7 +20,6 @@
         </q-item-section>
       </q-item>
     </q-list>
-    {{test}}
   </q-page>
 </template>
 
