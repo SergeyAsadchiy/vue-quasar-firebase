@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { firebaseAuth, firebaseDB, firebase } from 'boot/firebase'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
-import { Notify } from 'quasar'
 
 Vue.use(Vuex)
 
@@ -26,12 +25,6 @@ export default function (/* { ssrContext } */) {
             const userID = firebaseAuth.currentUser.uid
             firebaseDB.collection('users').doc(userID)
               .set({ name: data.name, email: data.email, online: true })
-              .then(() => {
-                Notify.create({
-                  message: 'User was successfully registered!',
-                  icon: 'check'
-                })
-              })
           })
           .catch(error => {
             if (error.code === 'auth/weak-password') {
@@ -106,7 +99,6 @@ export default function (/* { ssrContext } */) {
         bindFirestoreRef('users', firebaseDB.collection('users'))
       }),
       bindChat: firestoreAction(({ state, bindFirestoreRef }, otherUserID) => {
-        console.log('bindChat: ', otherUserID)
         const chats = firebaseDB.collection('chats').doc(state.userDetails.userID).collection(otherUserID)
           .orderBy('createdAt')
         bindFirestoreRef('chat', chats)

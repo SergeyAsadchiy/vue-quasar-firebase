@@ -34,6 +34,10 @@ export default {
         this.loginUser(this.formData)
       } else {
         this.registerUser(this.formData)
+          .then(resp => {
+            console.log(resp)
+            this.$q.notify({ message: 'User was successfully registered!', icon: 'check' })
+          })
       }
     }
   }
