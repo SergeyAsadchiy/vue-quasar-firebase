@@ -5,6 +5,7 @@ import 'firebase/analytics'
 // Add the Firebase products that you want to use
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/storage'
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
 // import * as firebase from "firebase/app"
 
@@ -16,13 +17,13 @@ let firebaseConfig
 switch (dbType) {
   case 'prod':
     firebaseConfig = {
-      apiKey: 'xxx',
-      authDomain: 'xxx',
-      projectId: 'xxx',
-      storageBucket: 'xxx',
-      messagingSenderId: 'xxx',
-      appId: 'xxx',
-      measurementId: 'xxx'
+      apiKey: '',
+      authDomain: '',
+      projectId: '',
+      storageBucket: '',
+      messagingSenderId: '',
+      appId: '',
+      measurementId: ''
     }
     break
   case 'dev':
@@ -42,6 +43,8 @@ switch (dbType) {
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 const firebaseAuth = firebaseApp.auth()
 const firebaseDB = firebaseApp.firestore()
+const firebaseStorage = firebase.storage()
 
-export { firebaseAuth, firebaseDB, firebase }
+
+export { firebaseAuth, firebaseDB, firebaseStorage, firebase }
 

@@ -38,8 +38,10 @@
             dense
             flat
             no-caps
-            icon="account_circle"
         >
+          <q-avatar>
+            <q-img style="height: 40px" :src="userDetails.avatarUrl"></q-img>
+          </q-avatar>
           <div class="q-ml-sm">
             <div>Logout</div>
             <div>{{userDetails.name}}</div>
@@ -128,6 +130,12 @@ const projectLinksData = [
     caption: 'auth page',
     icon: 'login',
     link: '/auth'
+  },
+  {
+    title: 'User Settings Page',
+    caption: 'user settings page',
+    icon: 'settings',
+    link: '/user-settings'
   }
 ]
 

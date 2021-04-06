@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { firebaseAuth, firebaseDB, firebase } from 'boot/firebase'
-import { vuexfireMutations, firestoreAction } from 'vuexfire'
+import { firebase, firebaseAuth, firebaseDB, firebaseStorage } from 'boot/firebase'
+import { firestoreAction, vuexfireMutations } from 'vuexfire'
 
 Vue.use(Vuex)
 
@@ -63,7 +63,8 @@ export default function (/* { ssrContext } */) {
                 commit('SET_USER_DETAILS', {
                   name: userDetails.name,
                   email: userDetails.email,
-                  userID: userID
+                  userID: userID,
+                  avatarUrl: userDetails.avatarImage?.downloadableURL ?? null
                 })
                 dispatch('updateUserInDB', { userID: userID, updates: { online: true } })
                 dispatch('bindUsers')
@@ -92,6 +93,46 @@ export default function (/* { ssrContext } */) {
         // to other user
         payload.message.from = 'them'
         firebaseDB.collection('chats').doc(payload.otherUserID).collection(state.userDetails.userID).add(payload.message)
+      },
+      uploadFileToStorage ({ state }, payload) {
+        return new Promise((resolve) => {
+          const metadata = {
+            createdAt: firebase.firestore.Timestamp.now(),
+            fileName: payload.file.name,
+            fileType: payload.file.type,
+            fileSize: null,
+            downloadableURL: ''
+          }
+          const storageRef = firebaseStorage.ref(payload.path)// .child(childPath);
+          const uploadTask = storageRef.put(payload.file, metadata)
+
+          uploadTask.on('state_changed',
+            (snapshot) => {
+              // Observe state change events such as progress, pause, and resume
+              // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+              // Uploaded percent show
+              if (payload.percentShowCallBack) {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                payload.percentShowCallBack(progress)
+              }
+            },
+            (error) => {
+              // Handle unsuccessful uploads
+              console.log(error)
+            },
+            () => {
+              // Handle successful uploads on complete
+              uploadTask.snapshot.ref.getMetadata().then((spMetadata) => {
+                metadata.fileSize = spMetadata.size
+
+                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                  metadata.downloadableURL = downloadURL
+                  return resolve(metadata)
+                })
+              })
+            }
+          )
+        })
       },
 
       // subscribes
