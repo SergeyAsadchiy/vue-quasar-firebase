@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['uploadFileToStorage', 'updateUserInDB', 'getUserByID']),
+    ...mapActions(['uploadFileToStorage', 'updateUserInDB', 'getUserByID', 'deleteFileFromStorage']),
     ...mapMutations(['SET_USER_DETAILS']),
 
     addFile (files) {
@@ -64,6 +64,7 @@ export default {
       // uploadFileToStorage
       if (this.file) {
         const path = `users/${this.userDetails.userID}/avatarImages/${this.file.name}`
+        const oldPath = `users/${this.userDetails.userID}/avatarImages/${this.userDetails?.avatarImage?.fileName}`
         const avatarImage = await this.uploadFileToStorage({
           file: this.file,
           path: path,
@@ -71,6 +72,9 @@ export default {
             this.progress = progress
           }
         })
+        if (this.userDetails?.avatarImage?.fileName) {
+          await this.deleteFileFromStorage({ path: oldPath })
+        }
         updateUserPayload.updates.avatarImage = avatarImage
       }
 
@@ -87,12 +91,13 @@ export default {
           name: respUser.name,
           email: respUser.email,
           userID: this.user.userID,
-          avatarUrl: respUser.avatarImage?.downloadableURL ?? null
+          avatarImage: respUser.avatarImage ?? null
         })
       }
     },
     onFileRemoved () {
       this.progress = 0
+      this.file = null
     },
     onFileRejected () {
       this.$q.notify({ message: 'upload file was rejected', color: 'red' })

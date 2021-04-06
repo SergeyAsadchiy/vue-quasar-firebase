@@ -40,7 +40,12 @@
             no-caps
         >
           <q-avatar>
-            <q-img style="height: 40px" :src="userDetails.avatarUrl"></q-img>
+            <q-img
+                v-if="avatarURL"
+                style="height: 40px"
+                :src="avatarURL">
+            </q-img>
+            <q-icon v-else name="account_circle"/>
           </q-avatar>
           <div class="q-ml-sm">
             <div>Logout</div>
@@ -163,6 +168,9 @@ export default {
       else if (currentPath.includes('/chat')) result = this.otherUserDetails.name + ' Chat'
       else if (currentPath.includes('/auth')) result = 'Auth Page'
       return result
+    },
+    avatarURL () {
+      return this.userDetails?.avatarImage?.downloadableURL
     }
   },
   mounted () {

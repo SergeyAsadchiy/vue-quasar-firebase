@@ -25,7 +25,7 @@ export default {
                 name: userDetails?.name,
                 email: userDetails?.email,
                 userID: userID,
-                avatarUrl: userDetails?.avatarImage?.downloadableURL ?? null
+                avatarImage: userDetails?.avatarImage ?? null
               })
               this.updateUserInDB({ userID: userID, updates: { online: true } })
               this.bindUsers()

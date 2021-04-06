@@ -107,6 +107,14 @@ export default function (/* { ssrContext } */) {
           )
         })
       },
+      deleteFileFromStorage ({ state }, payload) {
+        const storageRef = firebaseStorage.ref(payload.path)
+        storageRef.delete().then(() => {
+          console.log('File deleted successfully')
+        }).catch((error) => {
+          console.log('Uh-oh, an error occurred!', error.message)
+        })
+      },
 
       // subscribes
       bindUsers: firestoreAction(({ state, bindFirestoreRef }) => {
