@@ -52,35 +52,8 @@ export default function (/* { ssrContext } */) {
       logoutUser () {
         firebaseAuth.signOut()
       },
-      handleAuthStateChanged ({ state, commit, dispatch }) {
-        firebaseAuth.onAuthStateChanged(user => {
-          if (user) {
-            // User is logged in.
-            const userID = firebaseAuth.currentUser.uid
-            firebaseDB.collection('users').doc(userID).get()
-              .then(resp => {
-                const userDetails = resp.data()
-                commit('SET_USER_DETAILS', {
-                  name: userDetails.name,
-                  email: userDetails.email,
-                  userID: userID,
-                  avatarUrl: userDetails.avatarImage?.downloadableURL ?? null
-                })
-                dispatch('updateUserInDB', { userID: userID, updates: { online: true } })
-                dispatch('bindUsers')
-                this.$router.push('/')
-              })
-          } else {
-            // User is logged out.
-            dispatch('updateUserInDB', {
-              userID: state.userDetails.userID,
-              updates: { online: false }
-            })
-            commit('SET_USER_DETAILS', {})
-            dispatch('unbindUsers')
-            this.$router.push('/auth')
-          }
-        })
+      async getUserByID ({ state }, userID) {
+        return await firebaseDB.collection('users').doc(userID).get()
       },
       updateUserInDB ({ state }, payload) {
         if (!payload.userID) return
