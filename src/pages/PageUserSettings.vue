@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'PageUserSettings',
@@ -44,7 +44,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['uploadFileToStorage', 'updateUserInDB']),
+    ...mapActions(['uploadFileToStorage', 'updateUserInDB', 'getUserByID']),
+    ...mapMutations(['SET_USER_DETAILS']),
 
     addFile (files) {
       this.file = files[0]
@@ -74,7 +75,21 @@ export default {
       }
 
       // saveSettingsToDB
-      this.updateUserInDB(updateUserPayload)
+      await this.updateUserInDB(updateUserPayload)
+
+      // get current user from DB
+      let respUser = await this.getUserByID(this.user.userID)
+      respUser = respUser.data()
+
+      // update userDetails in store
+      if (respUser) {
+        this.SET_USER_DETAILS({
+          name: respUser.name,
+          email: respUser.email,
+          userID: this.user.userID,
+          avatarUrl: respUser.avatarImage?.downloadableURL ?? null
+        })
+      }
     },
     onFileRemoved () {
       this.progress = 0
