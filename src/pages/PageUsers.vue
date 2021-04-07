@@ -10,7 +10,13 @@
           v-ripple
       >
         <q-item-section avatar>
-          <q-avatar color="primary" text-color="white">
+          <q-avatar v-if="getAvatarURL(user)">
+            <q-img
+                style="height: 40px"
+                :src="getAvatarURL(user)">
+            </q-img>
+          </q-avatar>
+          <q-avatar v-else color="primary" text-color="white">
             {{ user.name.charAt(0) }}
           </q-avatar>
         </q-item-section>
@@ -37,6 +43,11 @@ export default {
   name: 'PageUsers',
   data () {
     return {}
+  },
+  methods: {
+    getAvatarURL (user) {
+      return user.avatarImage?.downloadableURL
+    }
   },
   computed: {
     ...mapGetters(['users'])
