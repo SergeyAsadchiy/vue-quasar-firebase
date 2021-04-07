@@ -22,5 +22,8 @@ npm run lint
 quasar build
 ```
 
+### Live demo
+https://quasar-chat-6688d.web.app
+
 ### Customize the configuration
 See [Configuring quasar.conf.js](https://v1.quasar.dev/quasar-cli/quasar-conf-js).

@@ -187,7 +187,7 @@ export default {
   }
   .container {
     width: 40%;
-    min-width: 500px;
+    min-width: 400px;
     height: 90vh;
     margin: auto;
   }

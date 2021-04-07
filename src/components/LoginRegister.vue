@@ -22,8 +22,8 @@ export default {
     return {
       formData: {
         name: '',
-        email: 'sergey@test.com',
-        password: '11111111'
+        email: '',
+        password: ''
       }
     }
   },
